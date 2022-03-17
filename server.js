@@ -8,14 +8,14 @@ const api = process.env.API_URL
 
 const usersRoute = require('./routes/users')
 const booksRoute = require('./routes/books')
-const reviewsRoute = require('./routes/reviews')
+
 
 // middlewares
 app.use(express.json());
 app.use(morgan('tiny'));
 app.use(`${api}/users`,usersRoute)
 app.use(`${api}/books`,booksRoute)
-app.use(`${api}/reviews`,reviewsRoute)
+
 
 
 

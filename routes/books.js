@@ -23,7 +23,7 @@ router.post('/',async(req, res) => {
 })
 
 // api to get info of all books
-router.route('/').get(async(req, res) => {
+router.get('/',async(req, res) => {
   const books = await Book.find()
   if(!books){
     res.status(500).send('books collection is empty')
@@ -31,6 +31,25 @@ router.route('/').get(async(req, res) => {
   res.send(books)
 })
 
+// api to get info of books of a particular semester
+router.get('/semester',async(req, res)=>{
+  const books = await Book.findOne({semester: req.body.semester})
+  if(!books){
+    res.status(500).send('that particular semester books collection is empty')
+  }
+  res.send(books)
+})
+
+// api to get reviews data of all books
+router.get('/reviews', async(req, res) => {
+  const books = await Book.find({}).select('reviews -_id')
+  if(!books){
+    res.status(500).send('books collection is empty')
+  }
+  res.send(books)
+})
+
+// -- jitni bhi get requests bina id ki hai woh iske upar daalo
 // api to get info of a specific book
 router.get(`/:id`, async(req,res) => {
   const book = await Book.findById(req.params.id)
@@ -39,14 +58,6 @@ router.get(`/:id`, async(req,res) => {
   }
   res.send(book)
 })
-
-// router.route('/semesters').get(async(req, res) => {
-//   const books = await Book.findOne({semester:req.body.semester})
-//   if(!books){
-//     res.status(500).send('books collection is empty')
-//   }
-//   res.send(books)
-// })
 
 // api to delete a specific book's data
 router.delete(`/:id`, async(req, res) => {
@@ -101,13 +112,9 @@ router.post(`/:id/reviews`, checkAuth, async(req, res) => {
   }
 })
 
-// api to get reviews data of all books
-// router.route('/reviews').get(async(req, res) => {
-//   const books = await Book.find({}).select('reviews -_id')
-//   if(!books){
-//     res.status(500).send('books collection is empty')
-//   }
-//   res.send(books)
-// })
+
+
+
+
 
 module.exports = router
