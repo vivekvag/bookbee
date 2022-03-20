@@ -15,7 +15,7 @@ app.use(express.json());
 app.use(morgan('tiny'));
 app.use(`${api}/users`,usersRoute)
 app.use(`${api}/books`,booksRoute)
-
+app.use(`/public/uploads`,express.static(__dirname + '/public/uploads'))
 
 
 

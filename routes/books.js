@@ -2,9 +2,41 @@ const {Book} = require('../models/books')
 const express = require('express')
 const router = express.Router()
 const checkAuth = require('../middleware/checkAuth')
+const multer = require('multer')
+// mime type to check uploaded image extension 
+const FILE_TYPE_MAP = {
+  'image/png': 'png',
+  'image/jpeg': 'jpeg',
+  'image/jpg': 'jpg'
+}
+
+// required code for image uploading 
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    const isValid = FILE_TYPE_MAP[file.mimetype]
+    let uploadError = new Error('invalid image type')
+    if(isValid){
+      uploadError = null
+    }
+    cb(uploadError, 'public/uploads')
+  },
+  filename: function (req, file, cb) {
+    const fileName = file.originalname.split(' ').join('-')
+    const extension = FILE_TYPE_MAP[file.mimetype]
+    cb(null, `${fileName}-${Date.now()}.${extension}`)
+  }
+})
+
+const uploadOptions = multer({ storage: storage })
 
 // api to post books general data
-router.post('/',async(req, res) => {
+router.post('/',uploadOptions.single('image'),async(req, res) => {
+    const file = req.file
+    if(!file){
+      return res.status(400).send('No image in the request')
+    }
+    const fileName = req.file.filename
+    const basePath = `${req.protocol}://${req.get('host')}/public/uploads/`
     let book = new Book({
       user: req.body.user,
       stream: req.body.stream,
@@ -13,13 +45,14 @@ router.post('/',async(req, res) => {
       subject: req.body.subject,
       bookName: req.body.bookName,
       publisher: req.body.publisher,
-      authors: req.body.authors
+      authors: req.body.authors,
+      image: `${basePath}${fileName}` 
     })
     book = await book.save()
     if(!book){
       return res.status(404).send('sorry the book can not be posted')
     }
-    res.send(book)
+    res.send('book inserted')
 })
 
 // api to get info of all books
@@ -33,7 +66,7 @@ router.get('/',async(req, res) => {
 
 // api to get info of books of a particular semester
 router.get('/semester',async(req, res)=>{
-  const books = await Book.findOne({semester: req.body.semester})
+  const books = await Book.find({semester: req.body.semester})
   if(!books){
     res.status(500).send('that particular semester books collection is empty')
   }
@@ -45,6 +78,15 @@ router.get('/reviews', async(req, res) => {
   const books = await Book.find({}).select('reviews -_id')
   if(!books){
     res.status(500).send('books collection is empty')
+  }
+  res.send(books)
+})
+
+//api to get books data of a particular subject
+router.get('/subject',async(req, res)=>{
+  const books = await Book.find({subject: req.body.subject})
+  if(!books){
+    res.status(500).send('that particular subjects books collection is empty')
   }
   res.send(books)
 })
