@@ -40,13 +40,13 @@ router.post('/',uploadOptions.single('image'),async(req, res) => {
     let book = new Book({
       user: req.body.user,
       stream: req.body.stream,
-      branch: req.body.branch,
       semester: req.body.semester,
       subject: req.body.subject,
       bookName: req.body.bookName,
       publisher: req.body.publisher,
       authors: req.body.authors,
-      image: `${basePath}${fileName}` 
+      image: `${basePath}${fileName}`,
+      branch: req.body.branch 
     })
     book = await book.save()
     if(!book){
