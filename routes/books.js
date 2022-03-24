@@ -43,8 +43,8 @@ router.post('/',uploadOptions.single('image'),async(req, res) => {
       semester: req.body.semester,
       subject: req.body.subject,
       bookName: req.body.bookName,
-      publisher: req.body.publisher,
       authors: req.body.authors,
+      publisher: req.body.publisher,
       image: `${basePath}${fileName}`,
       branch: req.body.branch 
     })
@@ -90,6 +90,7 @@ router.get('/subject',async(req, res)=>{
   }
   res.send(books)
 })
+
 
 // -- jitni bhi get requests bina id ki hai woh iske upar daalo
 // api to get info of a specific book
