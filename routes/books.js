@@ -131,6 +131,10 @@ router.post(`/:id/reviews`, checkAuth, async(req, res) => {
       throw new Error('Book already reviewed')
     }
 
+    if(req.body.rating < 1){
+      throw new Error('Give a rating between 1 and 5')
+    }
+
     const review = {
       name: req.user.name,
       rating: Number(rating),
