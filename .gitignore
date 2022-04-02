@@ -1,5 +1,8 @@
 node_modules/
 logs/
 .DS_Store
-*.log
 .env
+.vscode/
+coverage/
+.cache/
+dist/

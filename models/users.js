@@ -1,38 +1,38 @@
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
 
 const usersSchema = mongoose.Schema({
-  name:{
+  name: {
     type: String,
     required: true
   },
-  username:{
+  username: {
     type: String,
     required: true,
     unique: true
   },
-  isAdmin:{
+  isAdmin: {
     type: Boolean,
     default: false
   },
-  email:{
+  email: {
     type: String,
     required: true,
     unique: true
   },
-  passwordHash:{
+  passwordHash: {
     type: String,
     required: true,
     unique: true
   },
-  stream:{
+  stream: {
     type: String
   },
-  branch:{
+  branch: {
     type: String
   },
-  semester:{
+  semester: {
     type: Number
   }
-})
+});
 
-exports.User = mongoose.model('User',usersSchema)
+exports.User = mongoose.model('User', usersSchema);
