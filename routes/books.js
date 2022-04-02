@@ -73,6 +73,7 @@ router.get('/semester',async(req, res)=>{
   res.send(books)
 })
 
+
 // api to get reviews data of all books
 router.get('/reviews', async(req, res) => {
   const books = await Book.find({}).select('reviews -_id')
@@ -159,7 +160,7 @@ router.post(`/:id/reviews`, checkAuth, async(req, res) => {
   }
 })
 
-
+// api to sort the books according to their ratings and display them
 
 
 
