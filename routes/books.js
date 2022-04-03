@@ -92,6 +92,15 @@ router.get('/subject',async(req, res)=>{
   res.send(books)
 })
 
+// api to sort the books according to their ratings and display them
+router.get('/semAndSubject',async(req,res)=>{
+  const books = await Book.find({semester: req.body.semester,subject: req.body.subject}).select('bookName authors publisher reviews rating image -_id').sort({rating:'desc'})
+  if(!books){
+    res.status(500).send('Data is not present for this input')
+  }
+  res.send(books)
+})
+
 
 // -- jitni bhi get requests bina id ki hai woh iske upar daalo
 // api to get info of a specific book
@@ -160,7 +169,7 @@ router.post(`/:id/reviews`, checkAuth, async(req, res) => {
   }
 })
 
-// api to sort the books according to their ratings and display them
+
 
 
 
