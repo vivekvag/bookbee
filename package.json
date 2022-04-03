@@ -24,6 +24,8 @@
     "react-dom": "^18.0.0"
   },
   "devDependencies": {
+    "@babel/core": "^7.17.8",
+    "@babel/preset-react": "^7.16.7",
     "eslint": "^7.18.0",
     "eslint-config-prettier": "^8.1.0",
     "eslint-plugin-import": "^2.25.4",
